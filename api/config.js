@@ -34,6 +34,7 @@ export default async function handler(req, res) {
       chatUrl: url(c.chatUrl),
       requestUrl: url(c.requestUrl),
       about: String(c.about || "").trim().slice(0, 400),
+      djText: String(c.djText || "").trim().slice(0, 60),
       raw,
       banners: raw.map(r => ({ title: esc(r[0]).replace(/\*(.+?)\*/g, "<span>$1</span>"), text: r[1] }))
     };
