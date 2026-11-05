@@ -197,6 +197,10 @@
     .jp{--c:#4db8ff;--p:#1f78ff;--l:#ffc21a;width:min(650px,100%);margin:0 auto;padding:clamp(20px,5vw,32px);border:2px solid var(--c);border-radius:24px;background:linear-gradient(145deg,#071a4dee,#020a24ee);box-shadow:0 0 12px var(--c),0 0 32px #4db8ff44,inset 0 0 20px #4db8ff1a;text-align:center}
     .jp-dj{max-width:92%;margin:-2px auto 12px;padding:6px 16px;border:1px solid var(--c);border-radius:999px;font-weight:800;font-size:13px;letter-spacing:1.5px;text-align:center;color:#fff;background:rgba(10,36,130,.55);box-shadow:0 0 14px var(--p);text-shadow:0 0 10px var(--c);overflow-wrap:anywhere}
     .jp-dj[hidden]{display:none}
+    .jp-count{display:inline-flex;align-items:center;gap:7px;margin:0 auto 12px;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:1px;color:#a8f5d0;background:rgba(4,40,40,.45);border:1px solid #36e99a66}
+    .jp-count i{width:8px;height:8px;border-radius:50%;background:#36e99a;box-shadow:0 0 10px #36e99a}
+    .jp-count[hidden]{display:none}
+    .jp-countwrap{text-align:center}
     .jp-logo{width:110px;height:110px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 12px;border:2px solid var(--c);box-shadow:0 0 14px var(--c),0 0 34px var(--p)}
     .jp-title{font-size:20px;font-weight:900;letter-spacing:3px;text-shadow:0 0 6px var(--c),0 0 16px var(--c)}
     .jp-sub{color:#c9b8ff;font-size:13px;margin:6px 0 16px}
@@ -400,6 +404,7 @@ window.JFM_LOGO="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
         <div class="jp-dj" id="jpDj" hidden></div>
         <div class="jp-title">LISTEN LIVE</div>
         <div class="jp-sub">Good music, good vibes — anytime.</div>
+        <div class="jp-countwrap"><span class="jp-count" id="jpCount" hidden><i></i><span id="jpCountN"></span></span></div>
         <div class="jp-now" id="nowplaying"><small><i></i>NOW PLAYING</small><b id="songtitle"></b></div>
         <audio id="audio" preload="none" playsinline></audio>
         <div class="jp-main">
@@ -984,6 +989,29 @@ $("rs").onclick=function(){
   }
   check();setInterval(check,15000);
   document.addEventListener("visibilitychange",function(){if(!document.hidden)check()});
+})();
+/* BILANG NG LISTENERS: bilang lang ang mga NAGPE-PLAY ang player (naka-sync sa Play/Pause) */
+(function(){
+  if(location.hash==="#admin")return;
+  var id="",box=document.getElementById("jpCount"),n=document.getElementById("jpCountN"),jp=document.getElementById("jp"),was=false;
+  if(!box||!n||!jp)return;
+  try{id=sessionStorage.getItem("jfmSid")||""}catch(e){}
+  if(!id){id=Math.random().toString(36).slice(2,12)+Date.now().toString(36);try{sessionStorage.setItem("jfmSid",id)}catch(e){}}
+  function playing(){return jp.getAttribute("data-state")==="playing"}
+  function show(d){
+    if(!d||typeof d.count!=="number"){box.hidden=true;return}
+    n.textContent=d.count+(d.count===1?" LISTENER NAKIKINIG":" LISTENERS NAKIKINIG");box.hidden=false;
+  }
+  function ping(){
+    var p=playing(),q="";
+    if(p){q="?id="+id;was=true}
+    else if(was){q="?leave=1&id="+id;was=false}
+    fetch("/api/listeners"+q,{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(show).catch(function(){});
+  }
+  ping();setInterval(ping,30000);
+  if(window.MutationObserver)new MutationObserver(function(){if(playing()!==was)ping()}).observe(jp,{attributes:true,attributeFilter:["data-state"]});
+  document.addEventListener("visibilitychange",function(){if(!document.hidden)ping()});
+  window.addEventListener("pagehide",function(){if(was){try{navigator.sendBeacon("/api/listeners?leave=1&id="+id)}catch(e){}}});
 })();
 /* ADMIN: buksan ang link na may #admin sa dulo */
 (function(){
