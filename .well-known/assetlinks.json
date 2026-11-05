@@ -1,1 +1,9 @@
 
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "app.vercel.jeiannefm_app.twa",
+    "sha256_cert_fingerprints": ["6D:EF:B3:7E:CE:65:F0:24:D0:CD:13:01:06:22:54:39:11:A0:3D:2D:58:4E:87:EE:D3:29:35:0C:0A:70:41:CB"]
+  }
+}]
