@@ -195,6 +195,8 @@
 
     /* NEW PLAYER */
     .jp{--c:#4db8ff;--p:#1f78ff;--l:#ffc21a;width:min(650px,100%);margin:0 auto;padding:clamp(20px,5vw,32px);border:2px solid var(--c);border-radius:24px;background:linear-gradient(145deg,#071a4dee,#020a24ee);box-shadow:0 0 12px var(--c),0 0 32px #4db8ff44,inset 0 0 20px #4db8ff1a;text-align:center}
+    .jp-dj{max-width:92%;margin:-2px auto 12px;padding:6px 16px;border:1px solid var(--c);border-radius:999px;font-weight:800;font-size:13px;letter-spacing:1.5px;text-align:center;color:#fff;background:rgba(10,36,130,.55);box-shadow:0 0 14px var(--p);text-shadow:0 0 10px var(--c);overflow-wrap:anywhere}
+    .jp-dj[hidden]{display:none}
     .jp-logo{width:110px;height:110px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 12px;border:2px solid var(--c);box-shadow:0 0 14px var(--c),0 0 34px var(--p)}
     .jp-title{font-size:20px;font-weight:900;letter-spacing:3px;text-shadow:0 0 6px var(--c),0 0 16px var(--c)}
     .jp-sub{color:#c9b8ff;font-size:13px;margin:6px 0 16px}
@@ -395,6 +397,7 @@ window.JFM_LOGO="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMD
       <div class="banner" id="banner" aria-label="Banner"><div class="bg"></div><div class="blob b1"></div><div class="blob b2"></div><div class="eqb" id="bnEq" aria-hidden="true"></div><div class="sweep"></div></div>
       <section class="jp" id="jp" data-state="idle" aria-label="JEIANNE FM live radio player">
         <img class="jp-logo" data-logo alt="JEIANNE FM logo">
+        <div class="jp-dj" id="jpDj" hidden></div>
         <div class="jp-title">LISTEN LIVE</div>
         <div class="jp-sub">Good music, good vibes — anytime.</div>
         <div class="jp-now" id="nowplaying"><small><i></i>NOW PLAYING</small><b id="songtitle"></b></div>
@@ -700,6 +703,8 @@ window.JFM_APPLY=function(c){
   if(ok(c.chatUrl)){a=document.querySelector("#chatbox a.fbbtn");if(a)a.href=c.chatUrl;}
   if(ok(c.requestUrl)){a=document.querySelector("#requests a.btn");if(a)a.href=c.requestUrl;}
   if(c.about){a=document.querySelector(".about");if(a)a.textContent=c.about;}
+  a=document.getElementById("jpDj");
+  if(a){var t=typeof c.djText==="string"?c.djText.trim():"";a.textContent=t;a.hidden=!t;}
 };
 JFM_APPLY(window.JFM_CFG);
 </script>
@@ -774,6 +779,8 @@ a.lnk{color:#9fd4ff;font-size:13px}
 
     <div class="card">
       <h2>🖼 LOGO</h2>
+      <label for="dj" style="margin-top:0">Text sa ilalim ng logo (hal. ON AIR: DJ JEIANNE)</label>
+      <input id="dj" type="text" maxlength="60" placeholder="Iwanang blangko kung walang ipapakita" style="margin-bottom:14px">
       <div class="logo" id="lp" role="button" tabindex="0">Pindutin<br>para pumili</div>
       <input id="file" type="file" accept="image/*" hidden>
       <button class="btn" id="pick" type="button">📷 PUMILI SA GALLERY</button>
@@ -896,7 +903,7 @@ function drawSlides(){
 $("slides").addEventListener("input",function(e){var t=e.target;if(t.dataset.i!=null)S.raw[+t.dataset.i][+t.dataset.f]=t.value});
 $("slides").addEventListener("click",function(e){var d=e.target.dataset.del;if(d!=null){S.raw.splice(+d,1);drawSlides()}});
 $("addS").onclick=function(){if(S.raw.length<MAXS){S.raw.push(["",""]);drawSlides()}};
-function fill(){setLogo();drawSlides();$("chat").value=S.chatUrl||"";$("req").value=S.requestUrl||"";$("about").value=S.about||""}
+function fill(){setLogo();drawSlides();$("chat").value=S.chatUrl||"";$("req").value=S.requestUrl||"";$("about").value=S.about||"";$("dj").value=S.djText||""}
 
 /* ---- LOGO PICKER (gallery) ---- */
 function pick(){$("file").click()}
@@ -925,7 +932,7 @@ $("file").onchange=function(){
 function build(){
   var raw=S.raw.filter(function(r){return r[0].trim()||r[1].trim()});
   if(!raw.length)raw=JSON.parse(JSON.stringify(D.raw));
-  return{logo:S.logo||"",chatUrl:url($("chat").value),requestUrl:url($("req").value),about:$("about").value.trim().slice(0,400),raw:raw,
+  return{logo:S.logo||"",chatUrl:url($("chat").value),requestUrl:url($("req").value),about:$("about").value.trim().slice(0,400),djText:$("dj").value.trim().slice(0,60),raw:raw,
     banners:raw.map(function(r){return{title:esc(r[0]).replace(/\*(.+?)\*/g,"<span>$1</span>"),text:r[1]}})};
 }
 $("save").onclick=async function(){
