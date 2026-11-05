@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.jeiannefm.app",
+        "sha256_cert_fingerprints": ["E8:5D:F2:F8:86:F7:CA:06:06:14:EA:BE:E7:56:6D:80:95:82:15:E9:B9:29:8F:70:D6:E7:63:DF:4D:2A:29:C8"]
+      }
+    }]
