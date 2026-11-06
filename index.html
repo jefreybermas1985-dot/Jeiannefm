@@ -200,6 +200,9 @@
     .jp{--c:#4db8ff;--p:#1f78ff;--l:#ffc21a;width:min(650px,100%);margin:0 auto;padding:clamp(20px,5vw,32px);border:2px solid var(--c);border-radius:24px;background:linear-gradient(145deg,#071a4dee,#020a24ee);box-shadow:0 0 12px var(--c),0 0 32px #4db8ff44,inset 0 0 20px #4db8ff1a;text-align:center}
     .jp-dj{max-width:92%;margin:-2px auto 12px;padding:6px 16px;border:1px solid var(--c);border-radius:999px;font-weight:800;font-size:13px;letter-spacing:1.5px;text-align:center;color:#fff;background:rgba(10,36,130,.55);box-shadow:0 0 14px var(--p);text-shadow:0 0 10px var(--c);overflow-wrap:anywhere}
     .jp-dj[hidden]{display:none}
+    .jp-live{display:inline-flex;align-items:center;gap:6px;margin-right:10px;color:#ff2d3d;font-size:13px;font-weight:900;letter-spacing:1.5px;text-shadow:0 0 8px #ff2d3d,0 0 16px #ff2d3d99;vertical-align:middle}
+    .jp-live i{width:9px;height:9px;border-radius:50%;background:#ff2d3d;box-shadow:0 0 8px #ff2d3d,0 0 16px #ff2d3d;animation:jpLiveBlink 1s steps(1,end) infinite}
+    @keyframes jpLiveBlink{0%{opacity:1}50%{opacity:.1}100%{opacity:1}}
     .jp-count{display:inline-flex;align-items:center;gap:7px;margin:0 auto 12px;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:1px;color:#a8f5d0;background:rgba(4,40,40,.45);border:1px solid #36e99a66}
     .jp-count i{width:8px;height:8px;border-radius:50%;background:#36e99a;box-shadow:0 0 10px #36e99a}
     .jp-count[hidden]{display:none}
@@ -828,7 +831,7 @@ window.JFM_APPLY=function(c){
     if(ok(c.adLink))al.href=c.adLink;else al.removeAttribute("href");
   }
   a=document.getElementById("jpDj");
-  if(a){var t=typeof c.djText==="string"?c.djText.trim():"";a.textContent=t;a.hidden=!t;}
+  if(a){var t=typeof c.djText==="string"?c.djText.trim():"";a.textContent="";if(t){if(logo!==window.JFM_LOGO){var lv=document.createElement("span");lv.className="jp-live";lv.innerHTML="<i></i>LIVE";a.appendChild(lv);}a.appendChild(document.createTextNode(t));}a.hidden=!t;}
 };
 JFM_APPLY(window.JFM_CFG);
 </script>
@@ -921,7 +924,8 @@ a.lnk{color:#9fd4ff;font-size:13px}
     <div class="card">
       <h2>🖼 LOGO</h2>
       <label for="dj" style="margin-top:0">Text sa ilalim ng logo (hal. ON AIR: DJ JEIANNE)</label>
-      <input id="dj" type="text" maxlength="60" placeholder="Iwanang blangko kung walang ipapakita" style="margin-bottom:14px">
+      <input id="dj" type="text" maxlength="60" placeholder="Iwanang blangko kung walang ipapakita" style="margin-bottom:6px">
+      <p class="hint" style="margin-top:0;margin-bottom:14px">Kapag may pinalitan kang logo/picture <b>at</b> may nakalagay na text dito, lalabas ang pulang <b>● LIVE</b> na kumukurap-kurap sa unahan ng text. Kapag default na logo o walang text, walang LIVE.</p>
       <div class="logo" id="lp" role="button" tabindex="0">Pindutin<br>para pumili</div>
       <input id="file" type="file" accept="image/*" hidden>
       <button class="btn" id="pick" type="button">📷 PUMILI SA GALLERY</button>
