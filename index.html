@@ -493,7 +493,7 @@ window.JFM_LOGO="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BS
       </section>
       <p class="about">JEIANNE FM brings music and good vibes straight to you. Tune in and enjoy the sound.</p>
     </main>
-    <footer>© <span id="year">2026</span> JEIANNE FM · ONE OF THE BEST ONLINE RADIO STATION<br><span class="powered"><img data-logo alt="JEIANNE FM logo">Powered by JEIANNE FM</span></footer>
+    <footer>© <span id="year">2026</span> Jeianne FM · All rights reserved.<br><span class="powered"><img data-logo alt="JEIANNE FM logo">Powered by JEIANNE FM</span></footer>
   </div>
 
   <script>
@@ -953,16 +953,6 @@ a.lnk{color:#9fd4ff;font-size:13px}
     </div>
 
     <div class="card">
-      <h2>🔗 MGA LINK</h2>
-      <label for="chat">Chatroom (Facebook)</label>
-      <input id="chat" type="url" placeholder="https://...">
-      <label for="req">Request Box (Facebook group)</label>
-      <input id="req" type="url" placeholder="https://...">
-      <label for="about">About text</label>
-      <textarea id="about" maxlength="400"></textarea>
-    </div>
-
-    <div class="card">
       <h2>💾 I-SAVE</h2>
       <button class="btn main" id="save" type="button">I-SAVE (MAKIKITA NG LAHAT)</button>
       <p class="hint" id="hintS"></p>
@@ -976,7 +966,7 @@ a.lnk{color:#9fd4ff;font-size:13px}
 <script>
 (function(){
 var $=function(i){return document.getElementById(i)},MAXS=6;
-var D={logo:"",streamUrl:"https://stream.zeno.fm/c8ysmnpagphvv",t:{brand:"JEIANNE FM",live:"RADIO ONLINE",jpTitle:"LISTEN LIVE",jpSub:"Good music, good vibes — anytime.",jpStatus:"Pindutin ang Play para makinig sa JEIANNE FM.",jpOpen:"🔊 Hindi tumutunog? Buksan ang direct stream",chatH:"💬 CHATROOM",chatS:"Makipag-chat sa ibang listeners ng JEIANNE FM.",chatB:"💬 SUMALI SA CHAT SA FACEBOOK",chatM:"Mag-comment, mag-message, at makipagkwentuhan sa JEIANNE FM family sa Facebook page namin.",reqH:"🎵 REQUEST BOX",reqS:"Mag-request ng kanta o magpadala ng dedication.",reqB:"🎵 MAG-REQUEST SA FACEBOOK GROUP",reqM:"I-post ang pangalan, kanta/artist, at dedication mo sa aming Facebook group.",foot:"JEIANNE FM · ONE OF THE BEST ONLINE RADIO STATION",powered:"Powered by JEIANNE FM",pageTitle:"JEIANNE FM | Your Music. Your Station."},chatUrl:"https://www.facebook.com/share/1HJDz1cc99/",requestUrl:"https://www.facebook.com/share/g/1MHM4fJFhg/",about:"JEIANNE FM brings music and good vibes straight to you. Tune in and enjoy the sound.",raw:[["JEIANNE *FM*","ONE OF THE BEST ONLINE RADIO STATION"],["YOUR *MUSIC*","YOUR STATION · LISTEN LIVE 24/7"],["MAG-*REQUEST* NA!","ISANG PINDOT LANG, PARA SA KANTA MO"]]};
+var D={logo:"",streamUrl:"https://stream.zeno.fm/c8ysmnpagphvv",t:{brand:"JEIANNE FM",live:"RADIO ONLINE",jpTitle:"LISTEN LIVE",jpSub:"Good music, good vibes — anytime.",jpStatus:"Pindutin ang Play para makinig sa JEIANNE FM.",jpOpen:"🔊 Hindi tumutunog? Buksan ang direct stream",chatH:"💬 CHATROOM",chatS:"Makipag-chat sa ibang listeners ng JEIANNE FM.",chatB:"💬 SUMALI SA CHAT SA FACEBOOK",chatM:"Mag-comment, mag-message, at makipagkwentuhan sa JEIANNE FM family sa Facebook page namin.",reqH:"🎵 REQUEST BOX",reqS:"Mag-request ng kanta o magpadala ng dedication.",reqB:"🎵 MAG-REQUEST SA FACEBOOK GROUP",reqM:"I-post ang pangalan, kanta/artist, at dedication mo sa aming Facebook group.",foot:"Jeianne FM · All rights reserved.",powered:"Powered by JEIANNE FM",pageTitle:"JEIANNE FM | Your Music. Your Station."},chatUrl:"https://www.facebook.com/share/1HJDz1cc99/",requestUrl:"https://www.facebook.com/share/g/1MHM4fJFhg/",about:"JEIANNE FM brings music and good vibes straight to you. Tune in and enjoy the sound.",raw:[["JEIANNE *FM*","ONE OF THE BEST ONLINE RADIO STATION"],["YOUR *MUSIC*","YOUR STATION · LISTEN LIVE 24/7"],["MAG-*REQUEST* NA!","ISANG PINDOT LANG, PARA SA KANTA MO"]]};
 var S=JSON.parse(JSON.stringify(D)),API=parent.location.origin+"/api/config",pwv="",MODE="local",HK="jfmAdminHash";
 if(!S.raw||!S.raw.length)S.raw=JSON.parse(JSON.stringify(D.raw));
 
@@ -1076,7 +1066,7 @@ function adSrc(v){v=(v||"").trim();if(!v)return"";if(/^(https?:|data:image)/i.te
 function prevAd(){var i=$("adPrev"),s=adSrc($("adImg").value);if(s){i.src=s;i.style.display="block"}else{i.removeAttribute("src");i.style.display="none"}}
 $("adImg").oninput=prevAd;
 $("adClear").onclick=function(){$("adImg").value="";$("adLink").value="";prevAd()};
-function fill(){setLogo();drawSlides();drawTexts();$("adImg").value=S.adImg||"";$("adLink").value=S.adLink||"";prevAd();$("stream").value=S.streamUrl||"";$("chat").value=S.chatUrl||"";$("req").value=S.requestUrl||"";$("about").value=S.about||"";$("dj").value=S.djText||""}
+function fill(){setLogo();drawSlides();drawTexts();$("adImg").value=S.adImg||"";$("adLink").value=S.adLink||"";prevAd();$("stream").value=S.streamUrl||"";$("dj").value=S.djText||""}
 
 /* ---- LOGO PICKER (gallery) ---- */
 function pick(){$("file").click()}
@@ -1105,7 +1095,7 @@ $("file").onchange=function(){
 function build(){
   var raw=S.raw.filter(function(r){return r[0].trim()||r[1].trim()});
   if(!raw.length)raw=JSON.parse(JSON.stringify(D.raw));
-  return{logo:S.logo||"",adImg:$("adImg").value.trim().slice(0,300),adLink:url($("adLink").value),streamUrl:url($("stream").value),t:JSON.parse(JSON.stringify(S.t)),chatUrl:url($("chat").value),requestUrl:url($("req").value),about:$("about").value.trim().slice(0,400),djText:$("dj").value.trim().slice(0,60),raw:raw,
+  return{logo:S.logo||"",adImg:$("adImg").value.trim().slice(0,300),adLink:url($("adLink").value),streamUrl:url($("stream").value),t:JSON.parse(JSON.stringify(S.t)),chatUrl:S.chatUrl||"",requestUrl:S.requestUrl||"",about:S.about||"",djText:$("dj").value.trim().slice(0,60),raw:raw,
     banners:raw.map(function(r){return{title:esc(r[0]).replace(/\*(.+?)\*/g,"<span>$1</span>"),text:r[1]}})};
 }
 $("save").onclick=async function(){
