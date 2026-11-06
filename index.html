@@ -388,12 +388,12 @@
     .jp-btn{background:radial-gradient(circle at 30% 25%,#aef6ff,#4db8ff 45%,#2a6bff) !important}
 
     /* ===== SUPER SMOOTH + MAS SOLID ===== */
-    .jp,.section,#chatroom,#requests{position:relative;contain:none !important;content-visibility:visible !important;
+    .jp,.section,#chatroom,#requests,.clock{position:relative;isolation:isolate;contain:none !important;content-visibility:visible !important;
       background:linear-gradient(145deg,rgba(10,36,130,.94),rgba(4,14,70,.95)) !important;
       animation:borderLite 4s ease-in-out infinite !important;
       box-shadow:0 0 10px #1f78ff,0 0 30px #1f78ff66,inset 0 0 20px #1f78ff22 !important}
     @keyframes borderLite{0%,100%{border-color:#1f78ff}50%{border-color:#4db8ff}}
-    .jp::before,.section::before{content:"";position:absolute;inset:-2px;border-radius:inherit;pointer-events:none;z-index:-1;
+    .jp::before,.section::before,.clock::before{content:"";position:absolute;inset:-2px;border-radius:inherit;pointer-events:none;z-index:-1;
       box-shadow:0 0 14px #4db8ff,0 0 40px #4db8ffaa,inset 0 0 24px #4db8ff44;opacity:0;will-change:opacity;animation:glowLite 4s ease-in-out infinite}
     @keyframes glowLite{50%{opacity:1}}
     .shower i{filter:none !important}
@@ -401,7 +401,7 @@
     .section input,.section textarea{background:rgba(3,10,50,.9) !important}
     .chatframe{background:rgba(3,10,50,.9) !important}
     @media (min-width:900px){.jp,.section{background:linear-gradient(145deg,rgba(10,36,130,.96),rgba(4,14,70,.97)) !important}}
-    @media (prefers-reduced-motion:reduce){.jp::before,.section::before{animation:none}}
+    @media (prefers-reduced-motion:reduce){.jp::before,.section::before,.clock::before{animation:none}}
 
     /* ===== FONT: Back to the Future style (Michroma, retro-futuristic na malapad) ===== */
     html,body,button,input,textarea,select{font-family:"Michroma","Orbitron","Arial Black",sans-serif !important}
