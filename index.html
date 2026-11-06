@@ -807,7 +807,7 @@ window.JFM_APPLY=function(c){
   var logo=(typeof c.logo==="string"&&c.logo.indexOf("data:image/")===0)?c.logo:window.JFM_LOGO;
   window.JFM_LOGO_CUR=logo;
   a=document.querySelectorAll("img[data-logo]");
-  for(i=0;i<a.length;i++)a[i].src=logo;
+  for(i=0;i<a.length;i++)a[i].src=a[i].classList.contains("jp-logo")?logo:window.JFM_LOGO;
   a=document.querySelectorAll("#jfmIcon,#jfmTouch");
   for(i=0;i<a.length;i++){a[i].href=logo;if(logo!==window.JFM_LOGO)a[i].removeAttribute("type");}
   if(c.about){a=document.querySelector(".about");if(a)a.textContent=c.about;}
