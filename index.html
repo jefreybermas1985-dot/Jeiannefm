@@ -200,6 +200,9 @@
     .jp{--c:#4db8ff;--p:#1f78ff;--l:#ffc21a;width:min(650px,100%);margin:0 auto;padding:clamp(20px,5vw,32px);border:2px solid var(--c);border-radius:24px;background:linear-gradient(145deg,#071a4dee,#020a24ee);box-shadow:0 0 12px var(--c),0 0 32px #4db8ff44,inset 0 0 20px #4db8ff1a;text-align:center}
     .jp-dj{max-width:92%;margin:-2px auto 12px;padding:6px 16px;border:1px solid var(--c);border-radius:999px;font-weight:800;font-size:13px;letter-spacing:1.5px;text-align:center;color:#fff;background:rgba(10,36,130,.55);box-shadow:0 0 14px var(--p);text-shadow:0 0 10px var(--c);overflow-wrap:anywhere}
     .jp-dj[hidden]{display:none}
+    .clock{width:min(650px,100%);box-sizing:border-box;margin:0 auto 12px;padding:5px 14px;border:2px solid #4db8ff;border-radius:999px;text-align:center;background:linear-gradient(145deg,#071a4dee,#020a24ee);box-shadow:0 0 12px #4db8ff,0 0 32px #4db8ff66,inset 0 0 20px #4db8ff1a}
+    .clock b{display:block;font-size:clamp(13px,3.8vw,16px);font-weight:900;letter-spacing:1.5px;color:#fff;font-variant-numeric:tabular-nums;text-shadow:0 0 6px #4db8ff,0 0 14px #4db8ff,0 0 26px #4db8ff}
+    .clock small{display:block;margin-top:0;font-size:7.5px;font-weight:700;letter-spacing:.8px;color:#a8d8ff;text-transform:uppercase}
     .jp-live{display:inline-flex;align-items:center;gap:6px;margin-right:10px;color:#ff2d3d;font-size:13px;font-weight:900;letter-spacing:1.5px;text-shadow:0 0 8px #ff2d3d,0 0 16px #ff2d3d99;vertical-align:middle}
     .jp-live i{width:9px;height:9px;border-radius:50%;background:#ff2d3d;box-shadow:0 0 8px #ff2d3d,0 0 16px #ff2d3d;animation:jpLiveBlink 1s steps(1,end) infinite}
     @keyframes jpLiveBlink{0%{opacity:1}50%{opacity:.1}100%{opacity:1}}
@@ -454,6 +457,7 @@ window.JFM_LOGO="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BS
     <main>
       <!-- ANIMATED BANNER -->
       <div class="banner" id="banner" aria-label="Banner"><div class="bg"></div><div class="blob b1"></div><div class="blob b2"></div><div class="eqb" id="bnEq" aria-hidden="true"></div><div class="sweep"></div></div>
+      <div class="clock" id="clock" role="timer" aria-label="Orasan"><b id="clkT">--:--:--</b><small id="clkD"></small></div>
       <section class="jp" id="jp" data-state="idle" aria-label="JEIANNE FM live radio player">
         <img class="jp-logo" data-logo alt="JEIANNE FM logo">
         <div class="jp-dj" id="jpDj" hidden></div>
@@ -1284,6 +1288,30 @@ draw();
   });
   if(window.MutationObserver)new MutationObserver(function(){setTimeout(note,1200)}).observe(jp,{attributes:true,attributeFilter:["data-state"]});
   draw();
+})();
+</script>
+<script>
+(function(){
+  var t=document.getElementById("clkT"),d=document.getElementById("clkD");
+  if(!t||!d)return;
+  var off=0,TZ="Asia/Manila";
+  function tick(){
+    var n=new Date(Date.now()+off);
+    try{
+      t.textContent=n.toLocaleTimeString("en-US",{timeZone:TZ,hour:"numeric",minute:"2-digit",second:"2-digit"});
+      d.textContent="PH TIME \u2022 "+n.toLocaleDateString("en-US",{timeZone:TZ,weekday:"long",month:"long",day:"numeric",year:"numeric"});
+    }catch(e){t.textContent=n.toTimeString().slice(0,8);}
+  }
+  /* i-sync sa oras ng server para tama kahit mali ang orasan ng phone */
+  try{
+    var t0=Date.now();
+    fetch(location.pathname||"/",{method:"HEAD",cache:"no-store"}).then(function(r){
+      var h=r.headers.get("date");if(!h)return;
+      var srv=new Date(h).getTime();if(isNaN(srv))return;
+      var t1=Date.now();off=srv-(t0+(t1-t0)/2);tick();
+    }).catch(function(){});
+  }catch(e){}
+  tick();setInterval(tick,1000);
 })();
 </script>
 </body>
