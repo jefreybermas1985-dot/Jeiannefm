@@ -221,6 +221,11 @@
     .clock small{display:block;margin-top:0;font-size:7.5px;font-weight:700;letter-spacing:.8px;color:#a8d8ff;text-transform:uppercase}
     .jp-art{display:block;width:min(160px,55%);aspect-ratio:1/1;object-fit:cover;margin:2px auto 12px;border-radius:16px;border:2px solid #4db8ff;box-shadow:0 0 14px #4db8ff,0 0 30px #4db8ff55;background:#041238}
     .jp-art[hidden]{display:none}
+    @media (min-width:900px){
+      .duo{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch;width:100%;margin:28px auto 0}
+      .duo .section{width:100%;margin:0}
+      .banner,.clock,.jp,#socials{width:100%}
+    }
     .jp-red{color:#ff2d3d;text-shadow:0 0 8px #ff2d3d,0 0 18px #ff2d3d}
     .jp-live{display:inline-flex;align-items:center;gap:6px;margin-right:10px;color:#ff2d3d;font-size:13px;font-weight:900;letter-spacing:1.5px;text-shadow:0 0 8px #ff2d3d,0 0 16px #ff2d3d99;vertical-align:middle}
     .jp-live i{width:9px;height:9px;border-radius:50%;background:#ff2d3d;box-shadow:0 0 8px #ff2d3d,0 0 16px #ff2d3d;animation:jpLiveBlink 1s steps(1,end) infinite}
@@ -512,6 +517,7 @@ window.JFM_LOGO="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BS
 
       <div class="ad" id="adBox" hidden><a id="adLink" target="_blank" rel="noopener noreferrer sponsored"><img id="adImg" alt="Advertisement"></a></div>
 
+      <div class="duo">
       <section class="section" id="chatroom" aria-label="JEIANNE FM chatroom">
         <h2>💬 CHATROOM</h2>
         <p class="sub">Makipag-chat sa ibang listeners ng JEIANNE FM.</p>
@@ -525,6 +531,7 @@ window.JFM_LOGO="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BS
         <form class="jform" id="jfReqF"><div class="jrow"><input id="jfSong" maxlength="80" placeholder="Kanta" aria-label="Kanta" required><input id="jfArt" maxlength="80" placeholder="Artist" aria-label="Artist"></div><input id="jfGreet" maxlength="160" placeholder="Greeting" aria-label="Greeting"><input id="jfName" maxlength="40" placeholder="Pangalan mo" aria-label="Pangalan mo" autocomplete="name"><button class="btn" type="submit">IPADALA ANG REQUEST</button></form>
         <p class="jnote" id="jfRNote" aria-live="polite"></p><p class="jnote" id="jfRCount"></p><div class="jfeed" id="jfReqs"></div>
       </section>
+      </div>
       <section class="section" id="socials" aria-label="Social media">
         <h2>🔗 SOCIAL MEDIA</h2>
         <p class="sub">Sundan kami sa social media.</p>
