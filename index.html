@@ -219,6 +219,8 @@
     .clock{width:min(650px,100%);box-sizing:border-box;margin:0 auto 12px;padding:5px 14px;border:2px solid #4db8ff;border-radius:999px;text-align:center;background:linear-gradient(145deg,#071a4dee,#020a24ee);box-shadow:0 0 12px #4db8ff,0 0 32px #4db8ff66,inset 0 0 20px #4db8ff1a}
     .clock b{display:block;font-size:clamp(13px,3.8vw,16px);font-weight:900;letter-spacing:1.5px;color:#fff;font-variant-numeric:tabular-nums;text-shadow:0 0 6px #4db8ff,0 0 14px #4db8ff,0 0 26px #4db8ff}
     .clock small{display:block;margin-top:0;font-size:7.5px;font-weight:700;letter-spacing:.8px;color:#a8d8ff;text-transform:uppercase}
+    .jp-art{display:block;width:min(160px,55%);aspect-ratio:1/1;object-fit:cover;margin:2px auto 12px;border-radius:16px;border:2px solid #4db8ff;box-shadow:0 0 14px #4db8ff,0 0 30px #4db8ff55;background:#041238}
+    .jp-art[hidden]{display:none}
     .jp-red{color:#ff2d3d;text-shadow:0 0 8px #ff2d3d,0 0 18px #ff2d3d}
     .jp-live{display:inline-flex;align-items:center;gap:6px;margin-right:10px;color:#ff2d3d;font-size:13px;font-weight:900;letter-spacing:1.5px;text-shadow:0 0 8px #ff2d3d,0 0 16px #ff2d3d99;vertical-align:middle}
     .jp-live i{width:9px;height:9px;border-radius:50%;background:#ff2d3d;box-shadow:0 0 8px #ff2d3d,0 0 16px #ff2d3d;animation:jpLiveBlink 1s steps(1,end) infinite}
@@ -486,7 +488,7 @@ window.JFM_LOGO="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BS
         <div class="jp-title">LISTEN LIVE</div>
         <div class="jp-sub">Good music, good vibes — anytime.</div>
         <div class="jp-countwrap"><span class="jp-count" id="jpCount" hidden><i></i><span id="jpCountN"></span></span></div>
-        <div class="jp-now" id="nowplaying"><small><i></i>NOW PLAYING</small><b id="songtitle"></b></div>
+        <div class="jp-now" id="nowplaying"><img class="jp-art" id="songArt" alt="Album art" hidden><small><i></i>NOW PLAYING</small><b id="songtitle"></b></div>
         <audio id="audio" preload="none" playsinline></audio>
         <div class="jp-main">
           <button class="jp-btn" id="jpBtn" type="button" aria-label="Play">
@@ -811,10 +813,11 @@ window.JFM_LOGO="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BS
         try {
           navigator.mediaSession.metadata = new MediaMetadata({
             title: title || "Live Radio", artist: "JEIANNE FM", album: "JEIANNE FM",
-            artwork: [{ src: window.JFM_LOGO_CUR || window.JFM_LOGO, sizes: "512x512", type: "image/jpeg" }]
+            artwork: window.JFM_ART ? [{ src: window.JFM_ART, sizes: "600x600" }] : [{ src: window.JFM_LOGO_CUR || window.JFM_LOGO, sizes: "512x512", type: "image/jpeg" }]
           });
         } catch (e) {}
       }
+      window.jfmSetMeta = setMeta;
       setMeta();
       var tEl = document.getElementById("songtitle");
       if (tEl && window.MutationObserver) new MutationObserver(function () { setMeta(tEl.textContent); }).observe(tEl, { childList: true, characterData: true, subtree: true });
@@ -1335,6 +1338,56 @@ draw();
     }).catch(function(){});
   }catch(e){}
   tick();setInterval(tick,1000);
+})();
+</script>
+<script>
+/* ART COVER: hinahanap ang cover ng kantang tumutugtog (iTunes Search) */
+(function(){
+  var tEl=document.getElementById("songtitle"),img=document.getElementById("songArt");
+  if(!tEl||!img||!window.MutationObserver)return;
+  var cache={},cur="",n=0;
+  function norm(x){return String(x||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()}
+  function clean(t){
+    return t.replace(/\([^)]*\)|\[[^\]]*\]/g," ").replace(/\b(feat|ft|featuring)\.?\b.*$/i,"").replace(/\s[-\u2013\u2014]\s/g," ").replace(/\s\.\s/g," ").replace(/\s+/g," ").trim();
+  }
+  function show(u){
+    window.JFM_ART=u||"";
+    if(u){img.onerror=function(){img.hidden=true;window.JFM_ART="";window.jfmSetMeta&&window.jfmSetMeta(tEl.textContent)};img.src=u;img.hidden=false}
+    else{img.hidden=true;img.removeAttribute("src")}
+    window.jfmSetMeta&&window.jfmSetMeta(tEl.textContent);
+  }
+  function search(term,cb){
+    var cbn="jfmArt"+(++n),sc=document.createElement("script"),done=false;
+    function fin(r){if(done)return;done=true;try{delete window[cbn]}catch(e){window[cbn]=undefined}if(sc.parentNode)sc.parentNode.removeChild(sc);cb(r)}
+    window[cbn]=function(r){fin(r)};
+    sc.onerror=function(){fin(null)};
+    setTimeout(function(){fin(null)},7000);
+    sc.src="https://itunes.apple.com/search?media=music&entity=song&limit=8&term="+encodeURIComponent(term)+"&callback="+cbn;
+    document.head.appendChild(sc);
+  }
+  function pick(res,title){
+    var nt=norm(title),i,r,tn;
+    if(!res||!res.results)return "";
+    for(i=0;i<res.results.length;i++){
+      r=res.results[i];tn=norm(r.trackName);
+      if(tn&&r.artworkUrl100&&(" "+nt+" ").indexOf(" "+tn+" ")>-1)return r.artworkUrl100.replace(/\/\d+x\d+(bb)?\.(jpg|png)/,"/600x600bb.$2");
+    }
+    return "";
+  }
+  function update(){
+    var t=(tEl.textContent||"").trim();
+    if(t===cur)return;cur=t;
+    show("");
+    if(!t||/^jeianne\s*fm$/i.test(t))return;
+    if(cache.hasOwnProperty(t)){show(cache[t]);return}
+    var mine=t;
+    search(clean(t),function(res){
+      var u=pick(res,t);cache[mine]=u;
+      if(cur===mine)show(u);
+    });
+  }
+  new MutationObserver(update).observe(tEl,{childList:true,characterData:true,subtree:true});
+  update();
 })();
 </script>
 </body>
