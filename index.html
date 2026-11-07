@@ -467,6 +467,20 @@
     .banner .eqb{z-index:1;padding-bottom:16px}
     .banner .slide{background-image:none !important;z-index:2;padding-bottom:24px}
     @media (prefers-reduced-motion:reduce){.banner{animation:none !important}}
+  
+    /* HEADER: "JEIANNE FM" sagad sa kaliwa, "RADIO ONLINE" sagad sa kanan (hindi nagwa-wrap) */
+    html,body{overflow-x:clip}
+    header{display:flex !important;flex-wrap:nowrap !important;align-items:center;justify-content:space-between;gap:8px;width:100vw;max-width:none;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);box-sizing:border-box;padding:16px clamp(8px,1.6vw,18px) !important}
+    header .brand{flex:0 1 auto;min-width:0;gap:clamp(6px,2vw,12px)}
+    header .brand div{white-space:nowrap}
+    header .mark{flex:0 0 auto}
+    header .live{flex:0 0 auto;margin-left:auto;white-space:nowrap;text-align:right;justify-content:flex-end}
+    @media(max-width:560px){
+      header{padding:12px 8px !important;gap:6px}
+      header .mark{width:40px !important;height:40px !important}
+      header .brand{font-size:clamp(14px,4.6vw,19px) !important;letter-spacing:.8px !important}
+      header .live{font-size:clamp(8.5px,2.6vw,10.5px) !important;letter-spacing:.6px !important;gap:5px}
+    }
   </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Michroma&display=swap" rel="stylesheet">
 <script>
