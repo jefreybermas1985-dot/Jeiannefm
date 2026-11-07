@@ -203,6 +203,7 @@
     .clock{width:min(650px,100%);box-sizing:border-box;margin:0 auto 12px;padding:5px 14px;border:2px solid #4db8ff;border-radius:999px;text-align:center;background:linear-gradient(145deg,#071a4dee,#020a24ee);box-shadow:0 0 12px #4db8ff,0 0 32px #4db8ff66,inset 0 0 20px #4db8ff1a}
     .clock b{display:block;font-size:clamp(13px,3.8vw,16px);font-weight:900;letter-spacing:1.5px;color:#fff;font-variant-numeric:tabular-nums;text-shadow:0 0 6px #4db8ff,0 0 14px #4db8ff,0 0 26px #4db8ff}
     .clock small{display:block;margin-top:0;font-size:7.5px;font-weight:700;letter-spacing:.8px;color:#a8d8ff;text-transform:uppercase}
+    .jp-red{color:#ff2d3d;text-shadow:0 0 8px #ff2d3d,0 0 18px #ff2d3d}
     .jp-live{display:inline-flex;align-items:center;gap:6px;margin-right:10px;color:#ff2d3d;font-size:13px;font-weight:900;letter-spacing:1.5px;text-shadow:0 0 8px #ff2d3d,0 0 16px #ff2d3d99;vertical-align:middle}
     .jp-live i{width:9px;height:9px;border-radius:50%;background:#ff2d3d;box-shadow:0 0 8px #ff2d3d,0 0 16px #ff2d3d;animation:jpLiveBlink 1s steps(1,end) infinite}
     @keyframes jpLiveBlink{0%{opacity:1}50%{opacity:.1}100%{opacity:1}}
@@ -402,6 +403,11 @@
     .chatframe{background:rgba(3,10,50,.9) !important}
     @media (min-width:900px){.jp,.section{background:linear-gradient(145deg,rgba(10,36,130,.96),rgba(4,14,70,.97)) !important}}
     @media (prefers-reduced-motion:reduce){.jp::before,.section::before,.clock::before{animation:none}}
+    /* FOOTER: mas maliit pero mas matingkad ang kulay */
+    footer{font-size:10px !important;letter-spacing:.6px !important;color:#e6f3ff !important;text-shadow:0 0 6px #4db8ff,0 0 12px #4db8ff88}
+    .powered{font-size:10px !important;letter-spacing:1px !important;gap:6px !important;margin-top:10px !important;color:#8fdcff !important;text-shadow:0 0 6px #4db8ff,0 0 14px #4db8ff}
+    .powered img{width:20px !important;height:20px !important}
+    .about{font-size:11px !important;line-height:1.6 !important;margin-top:40px !important;color:#e6f3ff !important;text-shadow:0 0 6px #4db8ff,0 0 12px #4db8ff88 !important}
 
     /* ===== FONT: Back to the Future style (Michroma, retro-futuristic na malapad) ===== */
     html,body,button,input,textarea,select{font-family:"Michroma","Orbitron","Arial Black",sans-serif !important}
@@ -817,9 +823,10 @@ window.JFM_APPLY=function(c){
   if(c.about){a=document.querySelector(".about");if(a)a.textContent=c.about;}
   var tx=c.t||{};
   function last(el,v){if(!el)return;var n=el.lastChild;while(n&&n.nodeType!==3)n=n.previousSibling;if(n)n.nodeValue=v;else el.appendChild(document.createTextNode(v));}
+  function redLive(el){var t=el.textContent,m=t.match(/\blive\b/i);if(!m)return;el.textContent="";el.appendChild(document.createTextNode(t.slice(0,m.index)));var sp=document.createElement("span");sp.className="jp-red";sp.textContent=m[0];el.appendChild(sp);el.appendChild(document.createTextNode(t.slice(m.index+m[0].length)));}
   function put(sel,k,pre){var e=document.querySelector(sel),v=tx[k];if(e&&typeof v==="string"&&v.trim())last(e,(pre||"")+v.trim());}
   put(".brand > div","brand");put(".live","live"," ");
-  put(".jp-title","jpTitle");put(".jp-sub","jpSub");put("#jpStatus","jpStatus");put("#jpOpen","jpOpen");
+  var jt=document.querySelector(".jp-title");if(jt)jt.textContent=jt.textContent;put(".jp-title","jpTitle");if(jt)redLive(jt);put(".jp-sub","jpSub");put("#jpStatus","jpStatus");put("#jpOpen","jpOpen");
   put("#chatroom h2","chatH");put("#chatroom .sub","chatS");
   put("#requests h2","reqH");put("#requests .sub","reqS");
   put(".powered","powered");
